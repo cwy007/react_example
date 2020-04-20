@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Timer from "./Timer.js"
+import TodoApp from "./TodoApp.js"
 
 ReactDOM.render(
   <React.StrictMode>
-    <Timer />
+    <TodoApp />
   </React.StrictMode>,
   document.getElementById('root')
 );
