@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import TodoApp from "./TodoApp.js"
+import MarkdownEditor from "./MarkdownEditor.js"
 
 ReactDOM.render(
   <React.StrictMode>
-    <TodoApp />
+    <MarkdownEditor />
   </React.StrictMode>,
   document.getElementById('root')
 );
