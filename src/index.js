@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import MarkdownEditor from "./MarkdownEditor.js"
+import LikeButton from "./LikeButton"
 
 ReactDOM.render(
   <React.StrictMode>
-    <MarkdownEditor />
+    <LikeButton />
   </React.StrictMode>,
   document.getElementById('root')
 );
