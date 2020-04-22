@@ -2,12 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import LikeButton from "./LikeButton"
 
 ReactDOM.render(
-  <React.StrictMode>
-    <LikeButton />
-  </React.StrictMode>,
+  <h1>Hello, world!</h1>,
   document.getElementById('root')
 );
 
