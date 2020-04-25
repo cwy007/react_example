@@ -3,110 +3,100 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
-class NameForm extends React.Component {
+function BoilingVerdict(props) {
+  if (props.celsius >= 100) {
+    return <p>The water would boil.</p>;
+  }
+  return <p>The water would not boil.</p>;
+}
+
+class Calculator extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: '' };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
+    this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
+    this.state = { temperature: '', scale: 'c' };
   }
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
+  handleCelsiusChange(temperature) {
+    this.setState({ scale: 'c', temperature });
   }
 
-  handleSubmit(event) {
-    alert('提交的名字: ' + this.state.value);
-    event.preventDefault();
+  handleFahrenheitChange(temperature) {
+    this.setState({ scale: 'f', temperature });
   }
 
   render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <h1>{this.state.value}</h1>
-        <label>
-          名字:
-          <input type="text" name="name" value={this.state.value} onChange={this.handleChange} />
-        </label>
+    const scale = this.state.scale;
+    const temperature = this.state.temperature;
+    const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+    const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
 
-        <input type="submit" value="提交" />
-      </form>
+    return (
+      <div>
+        <TemperatureInput
+          scale="c"
+          temperature={celsius}
+          onTemperatureChange={this.handleCelsiusChange} />
+        <TemperatureInput
+          scale="f"
+          temperature={fahrenheit}
+          onTemperatureChange={this.handleFahrenheitChange} />
+        <BoilingVerdict
+          celsius={parseFloat(celsius)} />
+      </div>
     );
   }
 }
 
-class EssayForm extends React.Component {
+const scaleNames = {
+  c: 'Celsius',
+  f: 'Fahrenheit'
+};
+
+class TemperatureInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: '请撰写一篇关于你喜欢的 DOM 元素的文章.'
-    };
-
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
-
-  handleSubmit(event) {
-    alert('提交的文章: ' + this.state.value);
-    event.preventDefault();
+  handleChange(e) {
+    this.props.onTemperatureChange(e.target.value);
   }
 
   render() {
+    const temperature = this.props.temperature;
+    const scale = this.props.scale;
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          文章:
-          <textarea value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="提交" />
-      </form>
+      <fieldset>
+        <legend>Enter temperature in {scaleNames[scale]}:</legend>
+        <input value={temperature}
+          onChange={this.handleChange} />
+      </fieldset>
     );
   }
 }
 
-class FlavorForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { value: ["coconut", "lime"] };
+function toCelsius(fahrenheit) {
+  return (fahrenheit - 32) * 5 / 9;
+}
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+function toFahrenheit(celsius) {
+  return (celsius * 9 / 5) + 32;
+}
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
+function tryConvert(temperature, convert) {
+  const input = parseFloat(temperature);
+  if (Number.isNaN(input)) {
+    return '';
   }
-
-  handleSubmit(event) {
-    alert('你喜欢的风味是: ' + this.state.value);
-    event.preventDefault();
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          选择你喜欢的风味:
-          <select multiple="true" value={this.state.value} onChange={this.handleChange}>
-            <option value="grapefruit">葡萄柚</option>
-            <option value="lime">酸橙</option>
-            <option value="coconut">椰子</option>
-            <option value="mango">芒果</option>
-          </select>
-        </label>
-        <input type="submit" value="提交" />
-      </form>
-    );
-  }
+  const output = convert(input);
+  const rounded = Math.round(output * 1000) / 1000;
+  return rounded.toString();
 }
 
 ReactDOM.render(
-  <FlavorForm />,
+  <Calculator />,
   document.getElementById('root')
 );
 
