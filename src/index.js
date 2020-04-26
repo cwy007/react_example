@@ -1,109 +1,70 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import './split_panel.css';
+import './tic_tac_toe.css';
 import * as serviceWorker from './serviceWorker';
 
-function FancyBorder(props) {
-  return (
-    <div className={'FancyBorder FancyBorder-' + props.color}>
-      {props.children}
-    </div>
-  );
+class Square extends React.Component {
+  render() {
+    return (
+      <button className="square">
+        {/* TODO */}
+      </button>
+    );
+  }
 }
 
-function WelcomeDialog() {
-  return (
-    <FancyBorder color="blue">
-      <h1 className="Dialog-title">
-        Welcome
-      </h1>
-      <p className="Dialog-message">
-        Thank you for visiting our spacecraft!
-      </p>
-    </FancyBorder>
-  );
-}
-
-function Contacts() {
-  return <div className="Contacts" />;
-}
-
-function Chat() {
-  return <div className="Chat" />;
-}
-
-function SplitPane(props) {
-  return (
-    <div className="SplitPane">
-      <div className="SplitPane-left">
-        {props.left}
-      </div>
-      <div className="SplitPane-right">
-        {props.right}
-      </div>
-    </div>
-  );
-}
-
-function App() {
-  return (
-    <SplitPane
-      left={
-        <Contacts />
-      }
-      right={
-        <Chat />
-      } />
-  );
-}
-
-function Dialog(props) {
-  return (
-    <FancyBorder color="blue">
-      <h1 className="Dialog-title">
-        {props.title}
-      </h1>
-      <p className="Dialog-message">
-        {props.message}
-      </p>
-      {props.children}
-    </FancyBorder>
-  );
-}
-
-class SignUpDialog extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSignUp = this.handleSignUp.bind(this);
-    this.state = { login: '' };
+class Board extends React.Component {
+  renderSquare(i) {
+    return <Square />;
   }
 
   render() {
+    const status = 'Next player: X';
+
     return (
-      <Dialog title="Mars Exploration Program"
-        message="How should we refer to you?">
-        <input value={this.state.login}
-          onChange={this.handleChange} />
-        <button onClick={this.handleSignUp}>
-          Sign Me Up!
-        </button>
-      </Dialog>
+      <div>
+        <div className="status">{status}</div>
+        <div className="board-row">
+          {this.renderSquare(0)}
+          {this.renderSquare(1)}
+          {this.renderSquare(2)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(3)}
+          {this.renderSquare(4)}
+          {this.renderSquare(5)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(6)}
+          {this.renderSquare(7)}
+          {this.renderSquare(8)}
+        </div>
+      </div>
     );
-  }
-
-  handleChange(e) {
-    this.setState({ login: e.target.value });
-  }
-
-  handleSignUp() {
-    alert(`Welcome aboard, ${this.state.login}!`);
   }
 }
 
+class Game extends React.Component {
+  render() {
+    return (
+      <div className="game">
+        <div className="game-board">
+          <Board />
+        </div>
+        <div className="game-info">
+          <div>{/* status */}</div>
+          <ol>{/* TODO */}</ol>
+        </div>
+      </div>
+    );
+  }
+}
+
+// ========================================
+
 ReactDOM.render(
-  <SignUpDialog />,
+  <Game />,
   document.getElementById('root')
 );
 
